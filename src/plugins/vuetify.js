@@ -117,6 +117,8 @@ const nitraTheme = {
   },
 };
 
+//100, 300, 400, 500, 700, 900
+// thin, light, regular, medium, bold, black
 export default createVuetify({
   icons: {
     defaultSet: "fa",

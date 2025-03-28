@@ -1,43 +1,202 @@
+body {
+  background: white;
+  //   font-family: iter;
+}
+* {
+  letter-spacing: 0.4px;
+}
 .font-size-xss {
-    font-size: var(--v-font-size-xss);
+  font-size: var(--v-font-size-xss);
 }
-.font-size-xs{
-    font-size: var(--v-font-size-xs);
+.font-size-xs {
+  font-size: var(--v-font-size-xs);
 }
-.font-size-sm{
+.font-size-sm {
+  font-size: var(--v-font-size-sm);
+}
+.font-size-md {
+  font-size: var(--v-font-size-md);
+}
+.font-size-lg {
+  font-size: var(--v-font-size-lg);
+}
+.font-size-xl {
+  font-size: var(--v-font-size-xl);
+}
+.font-size-2xl {
+  font-size: var(--v-font-size-2xl);
+}
+.font-size-3xl {
+  font-size: var(--v-font-size-3xl);
+}
+.font-size-4xl {
+  font-size: var(--v-font-size-4xl);
+}
+.font-size-5xl {
+  font-size: var(--v-font-size-5xl);
+}
+.font-size-6xl {
+  font-size: var(--v-font-size-6xl);
+}
+.font-size-7xl {
+  font-size: var(--v-font-size-7xl);
+}
+.font-size-8xl {
+  font-size: var(--v-font-size-8xl);
+}
+.font-size-9xl {
+  font-size: var(--v-font-size-9xl);
+}
+.v-btn {
+  text-transform: none;
+  border-radius: 6px;
+}
+.custom-autocomplete {
+  .v-field {
     font-size: var(--v-font-size-sm);
-}
-.font-size-md{
-    font-size: var(--v-font-size-md);
-}
-.font-size-lg{
-    font-size: var(--v-font-size-lg);
-}
-.font-size-xl{
-    font-size: var(--v-font-size-xl);
-}
-.font-size-2xl{
-    font-size: var(--v-font-size-2xl);
-}
-.font-size-3xl{
-    font-size: var(--v-font-size-3xl);
-}
-.font-size-4xl{
-    font-size: var(--v-font-size-4xl);
-}
-.font-size-5xl{
-    font-size: var(--v-font-size-5xl);
-}
-.font-size-6xl{
-    font-size: var(--v-font-size-6xl);
-}
-.font-size-7xl{
-    font-size: var(--v-font-size-7xl);
-}
-.font-size-8xl{
-    font-size: var(--v-font-size-8xl);
-}
-.font-size-9xl{
-    font-size: var(--v-font-size-9xl);
+  }
+  .v-icon--size-default {
+    font-size: var(--v-font-size-xs) !important;
+    color: #8f9ca3;
+  }
 }
 
+.collect-payment-body {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #d5dadc;
+  .enter-amount span {
+    margin-top: 100px;
+  }
+}
+.enter-amount {
+  border-width: 0px 1px 0px 0px;
+  border-style: solid;
+  border-color: #d5dadc;
+}
+
+.custom-text-field {
+  input {
+    text-align: center !important;
+    font-size: var(--v-font-size-7xl);
+    height: var(--v-font-size-7xl);
+    font-weight: 700;
+    padding: 0px;
+    margin-top: 24px;
+  }
+}
+
+.custom-textarea {
+  margin-top: var(--v-font-size-6xl);
+  textarea {
+    height: 100px;
+    background-color: #f4f5f6;
+    mask-image: none !important;
+    border-radius: 8px 8px 0 0;
+    resize: none;
+  }
+}
+
+.summary {
+  .v-divider {
+    opacity: 1;
+  }
+  .summary-action button {
+    text-transform: none !important;
+  }
+  .button-group {
+    border-width: 1px;
+    border-style: solid;
+    border-color: #a9d4d6;
+    border-radius: 6px;
+  }
+  .v-field {
+    font-size: var(--v-font-size-xs) !important;
+  }
+  .v-field--prepended {
+    padding-inline-start: 0px;
+  }
+  .pay-alert{
+    letter-spacing: 0.4px;
+  }
+}
+// Vuetify Modal Style
+.v-overlay__scrim {
+  background-color: rgba(0, 0, 0, 0.4);
+  opacity: 1;
+}
+// Process Fee Modal
+.process-fee-modal {
+  // Slide custom CSS
+  .slider {
+    padding-top: 50px;
+  }
+  .v-slider-thumb__label {
+    height: auto;
+    background: white;
+    padding: 8px;
+    border-radius: 6px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  }
+  .v-slider-track__tick--first,
+  .v-slider-track__tick--last {
+    height: 15px;
+    width: 1px;
+    background-color: #c6cdd0;
+  }
+  .v-slider-track__tick-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #454f54;
+    margin-top: 20px !important;
+  }
+  .v-slider.v-input--horizontal .v-slider-track__background{
+    height: 6px;
+  }
+  .v-slider-track__background{
+    background: #E3E6E8 !important;
+    &.v-slider-track__background--opacity{
+      opacity: 1;
+    }
+  }
+  .processing-fee-result {
+    padding: 10px 0 12px 0;
+    .v-input__append {
+      margin-left: 8px;
+    }
+    .v-field--appended {
+      padding-right: 10px;
+    }
+    .v-field__input {
+      min-height: 32px !important;
+      padding: 0px 10px;
+    }
+  }
+  .set-to-zero {
+    margin-bottom: 22px;
+  }
+  .v-card-actions{
+    min-height: auto;
+  }
+  .v-btn__content{
+    font-weight: 600;
+  }
+}
+// Credit Card Modal
+.credit-card-detail{
+  .v-label{
+    opacity: 1;
+    color: #73838C;
+    font-weight: 500;
+  }
+  .v-field{
+    border-radius: 8px 8px 0 0;
+    background:#F4F5F6;
+  }
+  .v-combobox__menu-icon{
+    font-size: 16px;
+  }
+  .v-card-actions{
+    min-height: auto;
+  }
+}
