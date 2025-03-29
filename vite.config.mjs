@@ -41,6 +41,7 @@ export default defineConfig({
       },
     }),
   ],
+  base: "/nitra-test/",
   define: { "process.env": {} },
   resolve: {
     alias: {

@@ -216,12 +216,15 @@ input::-webkit-inner-spin-button {
     }
   }
   @media (max-width: 960px) {
-    .processing-fee-result{
+    .modal-title {
+      font-size: 20px;
+    }
+    .processing-fee-result {
       flex-wrap: wrap;
     }
-    .title{
+    .title {
       width: 100%;
-      text-align:center;
+      text-align: center;
       margin-bottom: 5px;
     }
   }

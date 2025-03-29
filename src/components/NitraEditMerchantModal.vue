@@ -6,7 +6,9 @@
   >
     <v-card class="pa-6 rounded-lg">
       <v-card-title class="font-size-2xl pa-0 d-flex align-center">
-        <span class="font-weight-bold">Edit Merchant Processing Fee</span>
+        <span class="font-weight-bold modal-title"
+          >Edit Merchant Processing Fee</span
+        >
         <v-btn
           icon
           @click="paymentStore.hideEditModal()"
@@ -167,7 +169,9 @@
           >
             Set patient processing fee to 0
           </div>
-          <div class="font-size-sm font-weight-bold w-100 text-justify">
+          <div
+            class="font-size-sm font-weight-bold w-100 text-md-justify text-center"
+          >
             On this {{ paymentStore.payment }} transaction, you pay ${{
               merchantFee
             }}, and patient pays ${{ patientFee }}
