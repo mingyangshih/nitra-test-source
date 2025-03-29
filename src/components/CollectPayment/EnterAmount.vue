@@ -1,5 +1,5 @@
 <template>
-  <span class="font-size-xs text-gray-700 text-center">Enter Amount</span>
+  <span class="text-gray-700 text-center title">Enter Amount</span>
   <v-text-field
     variant="solo"
     class="custom-text-field h-auto flex-grow-0 w-100"
@@ -11,7 +11,7 @@
   />
   <v-textarea
     placeholder="Description (Optional)"
-    class="custom-textarea flex-grow-0 text-gray-600"
+    class="custom-textarea flex-grow-0 text-gray-600 px-4 px-md-0"
     variant="solo"
     :width="textareaWidth"
     :flat="true"

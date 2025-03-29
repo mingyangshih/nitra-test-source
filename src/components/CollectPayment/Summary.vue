@@ -108,6 +108,7 @@
         :items="paymentStore.countryList"
       />
       <v-autocomplete
+        class="device-reader"
         label="Device Reader"
         bg-color="#F4F5F6"
         :items="paymentStore.canUseReaders"
@@ -115,6 +116,8 @@
         item-title="label"
         hide-details
         variant="solo"
+        menu-icon="fa-solid fa-angle-down"
+        :flat="true"
         v-if="paymentMethod === 'card'"
         v-model="selectedReader"
       >

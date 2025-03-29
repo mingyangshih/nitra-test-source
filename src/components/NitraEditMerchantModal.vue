@@ -59,9 +59,9 @@
           <div
             class="processing-fee-result d-flex align-center justify-space-between"
           >
-            <span class="font-weight-medium font-size-sm text-gray-900"
-              >Merchant processing fee</span
-            >
+            <div class="title font-weight-medium font-size-sm text-gray-900">
+              Merchant processing fee
+            </div>
             <v-text-field
               class="font-weight-bold flex-grow-0 font-size-md"
               min-width="87"
@@ -111,9 +111,9 @@
           <div
             class="processing-fee-result d-flex align-center justify-space-between pt-0 py-3"
           >
-            <span class="font-weight-medium font-size-sm text-gray-900"
-              >Patient processing fee</span
-            >
+            <div class="title font-weight-medium font-size-sm text-gray-900">
+              Patient processing fee
+            </div>
             <v-text-field
               class="font-weight-bold flex-grow-0 font-size-md"
               min-width="87"

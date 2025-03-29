@@ -1,5 +1,5 @@
 <template>
-  <v-container class="pa-6 fill-height" fluid>
+  <v-container class="pa-4 pa-md-6 fill-height" fluid>
     <v-row class="ma-0 fill-height flex-column" no-gutters>
       <v-col class="flex-grow-0 mb-4">
         <CollectPaymentHeader />
@@ -9,7 +9,7 @@
           <v-col
             xs="12"
             md="9"
-            class="enter-amount d-flex flex-column align-center fill-height border-t-0 border-s-0 border-b-0"
+            class="enter-amount d-flex flex-column align-center fill-height"
           >
             <EnterAmount />
           </v-col>
