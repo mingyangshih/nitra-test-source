@@ -1,12 +1,11 @@
 <template>
   <span class="font-size-xs text-gray-700 text-center">Enter Amount</span>
-  {{ paymentStore.selectedCountry }}
   <v-text-field
     variant="solo"
     class="custom-text-field h-auto flex-grow-0 w-100"
     :flat="true"
     :center-affix="true"
-    @input="updatePayment"
+    @input="paymentStore.onPaymentUpdated"
     hide-details
     v-model="paymentStore.payment"
   />
@@ -26,10 +25,6 @@ import { computed } from "vue";
 
 const paymentStore = usePaymentStore();
 const appStore = useAppStore();
-
-const updatePayment = (e) => {
-  paymentStore.updatePayment(e);
-};
 
 const textareaWidth = computed(() => {
   return appStore.isMdAndUp ? 400 : "100%";

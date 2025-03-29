@@ -5,6 +5,11 @@ body {
 * {
   letter-spacing: 0.4px;
 }
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 .font-size-xss {
   font-size: var(--v-font-size-xss);
 }

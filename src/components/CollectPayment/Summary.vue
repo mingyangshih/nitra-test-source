@@ -30,7 +30,7 @@
           v-model="paymentMethod"
           color="teal-100"
           class="w-100 h-auto button-group"
-          group
+          mandatory
         >
           <v-btn
             size="small"
@@ -44,7 +44,7 @@
             value="card"
             class="w-50 text-teal-700 py-2 rounded-0 font-size-xss"
             ><v-icon class="mr-1">fa-solid fa-credit-card</v-icon>Pay by Card
-            $0</v-btn
+            ${{ paymentStore.cardTotal }}</v-btn
           >
         </v-btn-toggle>
         <div class="pt-6 d-flex px-4" v-if="paymentMethod === 'card'">
@@ -55,15 +55,23 @@
             @click="paymentStore.showEditModal()"
             >Edit</a
           >
-          <span class="ml-auto">$0</span>
+          <span class="ml-auto"
+            >${{ paymentStore.patientCardProcessingFee }}</span
+          >
         </div>
       </div>
       <v-divider color="teal-700" thickness="1" class="mt-6"></v-divider>
       <div class="pt-6 pb-4 px-4">
         <div class="d-flex align-center" v-if="paymentMethod === 'card'">
           <span class="font-weight-bold">Pay by Card Total</span>
-          <span class="font-weight-bold ml-auto font-size-xl text-green-500"
-            >$0</span
+          <span
+            class="font-weight-bold ml-auto font-size-xl"
+            :class="[
+              canPay || paymentStore.cardTotal === 0
+                ? 'text-green-500'
+                : 'text-red-500',
+            ]"
+            >${{ paymentStore.cardTotal }}</span
           >
         </div>
         <div class="d-flex align-center" v-else>
@@ -71,7 +79,7 @@
           <span
             class="font-weight-bold ml-auto font-size-xl"
             :class="[
-              cashCanPay || paymentStore.cashTotal === 0
+              canPay || paymentStore.cashTotal === 0
                 ? 'text-green-500'
                 : 'text-red-500',
             ]"
@@ -80,7 +88,10 @@
         </div>
         <span
           class="text-red-500 font-size-xss font-weight-medium alert"
-          v-if="!cashCanPay && paymentStore.cashTotal > 0"
+          v-if="
+            !canPay &&
+            (paymentStore.cashTotal > 0 || paymentStore.cardTotal > 0)
+          "
           >*Total amount falls below the required minimum of $0.50</span
         >
       </div>
@@ -105,6 +116,7 @@
         hide-details
         variant="solo"
         v-if="paymentMethod === 'card'"
+        v-model="selectedReader"
       >
         <template v-slot:item="{ props, item }">
           <v-list-item v-bind="props" :disabled="item.raw.status === 'offline'">
@@ -125,7 +137,7 @@
       <div class="mt-3 py-6">
         <v-btn
           v-if="paymentMethod === 'cash'"
-          :disabled="!cashCanPay"
+          :disabled="!canPay"
           class="py-2 w-100 bg-orange-400 text-white font-size-sm pay-button"
           prepend-icon="fa-solid fa-money-bill-wave"
         >
@@ -133,17 +145,21 @@
         </v-btn>
         <v-btn
           v-if="paymentMethod === 'card'"
+          :disabled="!canPay"
           class="mt-3 py-2 w-100 bg-orange-400 text-white font-size-sm pay-button"
           prepend-icon="fa-solid fa-tablet-screen-button"
+          @click="showReader()"
         >
           Initiate Payment on Reader
         </v-btn>
         <v-btn
           v-if="paymentMethod === 'card'"
+          :disabled="!canPay"
           class="mt-3 py-2 w-100 bg-orange-50 text-orange-400 font-size-sm pay-button"
           prepend-icon="fa-regular fa-credit-card"
+          @click="paymentStore.showCreditCardModal()"
         >
-          Initiate Payment on Reader
+          Input Card Number Manually
         </v-btn>
       </div>
     </div>
@@ -154,13 +170,22 @@
 import { usePaymentStore } from "@/stores/payment";
 import { ref, computed } from "vue";
 let paymentMethod = ref("cash");
+let selectedReader = ref("");
 const paymentStore = usePaymentStore();
-const cashCanPay = computed(() => {
+const canPay = computed(() => {
   if (paymentMethod.value === "cash" && paymentStore.cashTotal > 0.5) {
+    return true;
+  }
+  if (paymentMethod.value === "card" && paymentStore.cardTotal > 0.5) {
     return true;
   }
   return false;
 });
+const showReader = () => {
+  selectedReader.value
+    ? paymentStore.showReaderModal()
+    : paymentStore.showAlertModal("Please Select A Reader");
+};
 </script>
 
 <style></style>

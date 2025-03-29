@@ -1,14 +1,19 @@
 import { defineStore } from "pinia";
+import { toFixed } from "@/utils/toFixed";
 
 export const usePaymentStore = defineStore("payment", {
   state: () => ({
     payment: "$0",
     paymentNumber: 0,
     selectedCountry: "",
+    showAlert: false,
+    alertMessage: "",
     showEdit: false,
     showCreditCardDetail: false,
     showPayByReader: false,
-    merchantProcessingPercentage: 0,
+    maxMerchantProcessingPercentage: 3.5,
+    maxFixedFee: 0.1,
+    patientCardProcessingFee: 0,
     countryList: [
       {
         id: 48,
@@ -92,10 +97,32 @@ export const usePaymentStore = defineStore("payment", {
     ],
   }),
   actions: {
+    showAlertModal(msg) {
+      this.showAlert = true;
+      this.alertMessage = msg;
+    },
+    hideAlertModal() {
+      this.showAlert = false;
+    },
     showEditModal() {
       this.showEdit = true;
     },
-    updatePayment(e) {
+    hideEditModal() {
+      this.showEdit = false;
+    },
+    showReaderModal() {
+      this.showPayByReader = true;
+    },
+    hideReaderModal() {
+      this.showPayByReader = false;
+    },
+    showCreditCardModal() {
+      this.showCreditCardDetail = true;
+    },
+    hideCreditCardModal() {
+      this.showCreditCardDetail = false;
+    },
+    onPaymentUpdated(e) {
       const value = e.target.value.replace(/\$/g, ""); // Remove $
       const isCompliance = /^\$\d+(\.\d*)?$/.test(e.target.value);
       if (!isCompliance) {
@@ -109,9 +136,11 @@ export const usePaymentStore = defineStore("payment", {
     resetPayment() {
       this.payment = "$0";
       this.paymentNumber = 0;
+      this.patientCardProcessingFee = 0;
     },
   },
   getters: {
+    // calculate tax fee
     taxFee(state) {
       let taxFee = 0;
       let taxRate = 0;
@@ -119,18 +148,24 @@ export const usePaymentStore = defineStore("payment", {
         taxRate = state.selectedCountry.taxRate;
         taxFee = +taxRate * state.paymentNumber;
       }
-      return +(Math.ceil(taxFee * 100) / 100).toFixed(2);
+      return toFixed(Math.ceil(taxFee * 100) / 100);
     },
+    // Sum of enter amount and tax fee.
     cashTotal(state) {
-      return (
+      return toFixed(
         Math.ceil((this.taxFee + state.paymentNumber) * 100) / 100
-      ).toFixed(2);
+      );
     },
+    // Filter the Readers that can be used in the country
     canUseReaders(state) {
       let canUseReaders = state.readers.filter((reader) => {
         return reader.locationId === state.selectedCountry.id;
       });
       return canUseReaders;
+    },
+    // Sum of cashTotal and processing fee
+    cardTotal(state) {
+      return toFixed(this.cashTotal + state.patientCardProcessingFee);
     },
   },
 });

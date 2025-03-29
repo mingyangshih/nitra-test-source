@@ -9,7 +9,7 @@
         <span class="font-weight-bold">Credit Card Details</span>
         <v-btn
           icon
-          @click="paymentStore.showCreditCardDetail = false"
+          @click="paymentStore.hideCreditCardModal()"
           variant="text"
           class="ml-auto px-0"
           size="small"
@@ -80,12 +80,17 @@
       </v-card-text>
       <v-card-actions class="pa-0 mt-6 border-t">
         <div class="w-100 d-flex justify-space-between px-6 pt-3">
-          <v-btn variant="text" class="text-gray-600 py-2 px-4">Cancel</v-btn>
+          <v-btn
+            variant="text"
+            class="text-gray-600 py-2 px-4"
+            @click="paymentStore.hideCreditCardModal()"
+            >Cancel</v-btn
+          >
           <v-btn
             class="bg-orange-400 py-2 px-4"
             color="white"
-            @click="paymentStore.showCreditCardDetail = false"
-            >Update</v-btn
+            @click="paymentStore.hideCreditCardModal()"
+            >Pay {{ paymentStore.cardTotal }}</v-btn
           >
         </div>
       </v-card-actions>

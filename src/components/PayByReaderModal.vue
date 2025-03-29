@@ -25,7 +25,7 @@
         <div
           class="py-3 bg-teal-50 font-size-sm font-weight-medium text-teal-900 text-center rounded"
         >
-          Auto-Processing in 5s
+          Auto-Processing in {{ countDownValue }}s
         </div>
         <div class="text-gray-700 font-size-xss text-center">
           Or click “Process Payment” below
@@ -33,11 +33,16 @@
       </v-card-text>
       <v-card-actions class="pa-0 border-t">
         <div class="w-100 d-flex justify-space-between px-6 py-3">
-          <v-btn variant="text" class="text-gray-600 py-2 px-4">Cancel</v-btn>
+          <v-btn
+            variant="text"
+            class="text-gray-600 py-2 px-4"
+            @click="paymentStore.hideReaderModal()"
+            >Cancel</v-btn
+          >
           <v-btn
             class="bg-orange-400 py-2 px-4"
             color="white"
-            @click="paymentStore.showPayByReader = false"
+            @click="processPayment()"
             >Process Payment</v-btn
           >
         </div>
@@ -47,6 +52,24 @@
 </template>
 
 <script setup>
+import { ref, onMounted, onUnmounted } from "Vue";
 import { usePaymentStore } from "@/stores/payment";
 const paymentStore = usePaymentStore();
+let countDownValue = ref(5);
+let timer;
+
+const processPayment = () => {
+  paymentStore.hideReaderModal();
+};
+onMounted(() => {
+  timer = setInterval(() => {
+    countDownValue.value -= 1;
+    if (countDownValue.value === 0) {
+      processPayment();
+    }
+  }, 1000);
+});
+onUnmounted(() => {
+  clearInterval(timer);
+});
 </script>

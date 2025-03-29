@@ -21,8 +21,12 @@
     </v-row>
     <NitraEditMerchantModal />
     <CreditCardDetailModal />
-    <PayByReaderModal />
+    <PayByReaderModal v-if="paymentStore.showPayByReader" />
+    <AlertModal />
   </v-container>
 </template>
 
-<script setup></script>
+<script setup>
+import { usePaymentStore } from "@/stores/payment";
+const paymentStore = usePaymentStore();
+</script>
