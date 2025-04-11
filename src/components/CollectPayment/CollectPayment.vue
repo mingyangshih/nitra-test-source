@@ -21,12 +21,19 @@
     </v-row>
     <NitraEditMerchantModal />
     <CreditCardDetailModal />
-    <PayByReaderModal v-if="paymentStore.showPayByReader" />
+    <template v-if="paymentStore.showPayByReader">
+      <PayByReaderModal />
+    </template>
+
     <AlertModal />
   </v-container>
 </template>
 
 <script setup>
+import { onMounted } from "vue";
 import { usePaymentStore } from "@/stores/payment";
 const paymentStore = usePaymentStore();
+onMounted(() => {
+  paymentStore.setDefaultCountry();
+});
 </script>

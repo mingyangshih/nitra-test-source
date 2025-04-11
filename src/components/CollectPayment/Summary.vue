@@ -119,7 +119,7 @@
         menu-icon="fa-solid fa-angle-down"
         :flat="true"
         v-if="paymentMethod === 'card'"
-        v-model="selectedReader"
+        v-model="paymentStore.selectedDeviceReader"
       >
         <template v-slot:item="{ props, item }">
           <v-list-item v-bind="props" :disabled="item.raw.status === 'offline'">
@@ -173,7 +173,6 @@
 import { usePaymentStore } from "@/stores/payment";
 import { ref, computed } from "vue";
 let paymentMethod = ref("cash");
-let selectedReader = ref("");
 const paymentStore = usePaymentStore();
 const canPay = computed(() => {
   if (paymentMethod.value === "cash" && paymentStore.cashTotal > 0.5) {
@@ -185,7 +184,7 @@ const canPay = computed(() => {
   return false;
 });
 const showReader = () => {
-  selectedReader.value
+  paymentStore.selectedDeviceReader
     ? paymentStore.showReaderModal()
     : paymentStore.showAlertModal("Please Select A Reader");
 };

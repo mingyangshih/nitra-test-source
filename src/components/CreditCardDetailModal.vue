@@ -27,6 +27,7 @@
                 hide-details
                 variant="solo"
                 :flat="true"
+                v-model="creditCardDetail.name"
               ></v-text-field
             ></v-col>
             <v-col cols="12" md="12" class="pa-0 mb-3">
@@ -35,8 +36,13 @@
                 class="font-weight-medium text-gray-600 opacity-100"
                 hide-details
                 variant="solo"
+                v-model="creditCardDetail.cardNumber"
+                @input="onCardNumberChange"
                 :flat="true"
               ></v-text-field>
+              <span class="text-red-200 font-size-sm" v-if="!isCardNumberValid"
+                >Card number is invalid</span
+              >
             </v-col>
             <v-col cols="12" md="6" class="pe-0 pe-md-3 ps-0 py-0 mb-3">
               <v-text-field
@@ -45,6 +51,8 @@
                 hide-details
                 variant="solo"
                 :flat="true"
+                v-model="creditCardDetail.expirationDate"
+                @input="onExpirationDateChange"
               ></v-text-field>
             </v-col>
             <v-col cols="12" md="6" class="pa-0 mb-3">
@@ -54,7 +62,12 @@
                 hide-details
                 variant="solo"
                 :flat="true"
+                v-model="creditCardDetail.cvcNumber"
+                @input="onCvcNumberChange"
               ></v-text-field>
+              <span class="text-red-200 font-size-sm" v-if="!isCvcNumberValid"
+                >CVC is invalid</span
+              >
             </v-col>
             <v-col cols="12" md="6" class="pe-0 pe-md-3 ps-0 py-0 mb-3 mb-md-0">
               <v-combobox
@@ -64,6 +77,7 @@
                 menu-icon="fa-solid fa-angle-down"
                 :flat="true"
                 hide-details
+                v-model="creditCardDetail.country"
               ></v-combobox>
             </v-col>
             <v-col cols="12" md="6" class="pa-0 mb-md-0">
@@ -73,6 +87,7 @@
                 hide-details
                 variant="solo"
                 :flat="true"
+                v-model="creditCardDetail.zip"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -89,6 +104,7 @@
           <v-btn
             class="bg-orange-400 py-2 px-4"
             color="white"
+            :disabled="!canSubmit"
             @click="paymentStore.hideCreditCardModal()"
             >Pay {{ paymentStore.cardTotal }}</v-btn
           >
@@ -98,8 +114,47 @@
   </v-dialog>
 </template>
 <script setup>
-import { ref } from "vue";
+import { ref, computed, reactive } from "vue";
 import { usePaymentStore } from "@/stores/payment";
 const paymentStore = usePaymentStore();
-let tickLabels = ref(["0%", "3.5%"]);
+let creditCardDetail = reactive({
+  name: "",
+  cardNumber: "",
+  cvcNumber: "",
+  expirationDate: "",
+  country: "",
+  zip: "",
+});
+let isCardNumberValid = computed(() => {
+  return creditCardDetail.cardNumber.length === 16;
+});
+let isCvcNumberValid = computed(() => {
+  return creditCardDetail.cvcNumber.length === 3;
+});
+const onCardNumberChange = (e) => {
+  if (e.target.value.length > 16) {
+    creditCardDetail.cardNumber = e.target.value.slice(0, 16);
+  }
+};
+const onCvcNumberChange = (e) => {
+  if (e.target.value.length > 3) {
+    creditCardDetail.cvcNumber = e.target.value.slice(0, 3);
+  }
+};
+const onExpirationDateChange = () => {
+  let digits = creditCardDetail.expirationDate.replace(/\D/g, "");
+  if (digits.length > 2) {
+    digits = `${digits.slice(0, 2)}/${digits.slice(2, 4)}`;
+  }
+  creditCardDetail.expirationDate = digits;
+};
+let canSubmit = computed(() => {
+  let canSubmit = false;
+  Object.keys(creditCardDetail).forEach((value) => {
+    if (creditCardDetail[value] !== "") {
+      canSubmit = true;
+    }
+  });
+  return canSubmit;
+});
 </script>

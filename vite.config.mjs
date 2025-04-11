@@ -51,6 +51,22 @@ export default defineConfig({
   },
   server: {
     port: 3000,
+    // https://israynotarray.com/nodejs/20230407/1216067379/
+    proxy: {
+      "^/api/.*": {
+        target: "http://partners.mythicalmagicalmedia.com",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\//, "/api/"),
+        configure: (proxy, options) => {
+          proxy.on("proxyReq", (proxyReq, req, _res) => {
+            console.log(
+              "Sending Request to the Target:",
+              options.target + proxyReq.path
+            );
+          });
+        },
+      },
+    },
   },
   css: {
     preprocessorOptions: {

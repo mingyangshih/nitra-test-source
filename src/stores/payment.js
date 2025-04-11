@@ -6,13 +6,14 @@ export const usePaymentStore = defineStore("payment", {
     payment: "$0",
     paymentNumber: 0,
     selectedCountry: "",
+    selectedDeviceReader: "",
     showAlert: false,
     alertMessage: "",
     showEdit: false,
     showCreditCardDetail: false,
     showPayByReader: false,
     maxMerchantProcessingPercentage: 3.5,
-    maxFixedFee: 0.1,
+    maxTotalFixedFee: 0.1,
     patientCardProcessingFee: 0,
     countryList: [
       {
@@ -138,6 +139,17 @@ export const usePaymentStore = defineStore("payment", {
       this.paymentNumber = 0;
       this.patientCardProcessingFee = 0;
     },
+    setDefaultCountry() {
+      this.selectedCountry = this.countryList[0];
+    },
+    setDefaultDeviceReader(canUseReaders) {
+      for (let index = 0; index < canUseReaders.length; index++) {
+        if (canUseReaders[index].status === "online") {
+          this.selectedDeviceReader = canUseReaders[index];
+          break;
+        }
+      }
+    },
   },
   getters: {
     // calculate tax fee
@@ -161,6 +173,7 @@ export const usePaymentStore = defineStore("payment", {
       let canUseReaders = state.readers.filter((reader) => {
         return reader.locationId === state.selectedCountry.id;
       });
+      this.setDefaultDeviceReader(canUseReaders);
       return canUseReaders;
     },
     // Sum of cashTotal and processing fee

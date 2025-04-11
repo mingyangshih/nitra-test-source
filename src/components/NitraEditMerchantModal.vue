@@ -128,7 +128,7 @@
               bg-color="rgba(235, 238, 239, 0.93)"
               color="#000"
               v-model="patientProcessingPercentage"
-              @input="onPatientProcessingPercentageChange"
+              @change="onPatientProcessingPercentageChange"
             >
               <template v-slot:append-inner>
                 <span class="text-gray-700 font-size-sm">%</span>
@@ -203,10 +203,10 @@ import { usePaymentStore } from "@/stores/payment";
 import { toFixed } from "@/utils/toFixed";
 const paymentStore = usePaymentStore();
 let maxPercentage = paymentStore.maxMerchantProcessingPercentage;
-let maxFixedFee = paymentStore.maxFixedFee;
+let maxTotalFixedFee = paymentStore.maxTotalFixedFee;
 let merchantProcessingPercentage = ref(0);
-let patientProcessingPercentage = ref(0);
-let fixedMerchantProcessingFee = ref(0);
+let patientProcessingPercentage = ref(3.5);
+let fixedMerchantProcessingFee = ref(0.1);
 let fixedPatientProcessingFee = ref(0);
 let tickLabels = ref(["0%", maxPercentage]);
 // Calculate patient processing percentage when merchantProcessingPercentage changed.
@@ -236,21 +236,19 @@ const onPatientProcessingPercentageChange = (e) => {
 };
 watch(fixedMerchantProcessingFee, (newValue, oldValue) => {
   if (newValue === oldValue) return;
-  if (newValue > maxFixedFee) {
-    fixedMerchantProcessingFee.value = maxFixedFee;
-  }
   if (newValue < 0) {
     fixedMerchantProcessingFee.value = 0;
   }
+  fixedPatientProcessingFee.value =
+    maxTotalFixedFee - fixedMerchantProcessingFee.value;
 });
 watch(fixedPatientProcessingFee, (newValue, oldValue) => {
   if (newValue === oldValue) return;
-  if (+newValue > maxFixedFee) {
-    fixedPatientProcessingFee.value = maxFixedFee;
-  }
   if (newValue < 0) {
     fixedPatientProcessingFee.value = 0;
   }
+  fixedMerchantProcessingFee.value =
+    maxTotalFixedFee - fixedPatientProcessingFee.value;
 });
 // Calculate merchant fee
 const merchantFee = computed(() => {
@@ -276,9 +274,7 @@ const resetPatientProcessingFee = () => {
 };
 // Update Patient Card Processing Fee
 const updatePatientCardProcessingFee = () => {
-  paymentStore.patientCardProcessingFee = toFixed(
-    patientFee.value + merchantFee.value
-  );
+  paymentStore.patientCardProcessingFee = toFixed(patientFee.value);
   paymentStore.hideEditModal();
 };
 </script>
